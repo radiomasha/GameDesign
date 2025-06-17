@@ -8411,7 +8411,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 2.71}
+  m_AnchoredPosition: {x: 0, y: 3.8}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1123265223
@@ -9819,11 +9819,11 @@ MonoBehaviour:
   debrisMaxSpeed: 50
   uniformScale: 1
   backgroundScaleMin: {x: 0.01, y: 0.01, z: 0.01}
-  backgroundScaleMax: {x: 0.08, y: 0.08, z: 0.08}
+  backgroundScaleMax: {x: 0.05, y: 0.05, z: 0.05}
   debrisScaleMin: {x: 0.005, y: 0.005, z: 0.005}
   debrisScaleMax: {x: 0.01, y: 0.01, z: 0.01}
-  bonusScaleMin: {x: 1, y: 1, z: 1}
-  bonusScaleMax: {x: 1, y: 1, z: 1}
+  bonusScaleMin: {x: 3, y: 3, z: 3}
+  bonusScaleMax: {x: 3, y: 3, z: 3}
 --- !u!1 &1332806759
 GameObject:
   m_ObjectHideFlags: 0
@@ -12501,9 +12501,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _activator: {fileID: 905065664}
-  _fingerTip: {fileID: 0}
-  _ship: {fileID: 0}
-  _hand: {fileID: 0}
+  _fingerTip: {fileID: 643322401}
+  _ship: {fileID: 1853863737}
+  _hand: {fileID: 1277055400}
   _rotationSensitivity: 4
   _scaleFactor: 15
   activate: {fileID: 11400000, guid: 0abfde13717c6634ab6733513d45eb6e, type: 2}
@@ -13614,7 +13614,7 @@ PrefabInstance:
     - target: {fileID: 3066564013539859893, guid: ded92bffdbffb794aa3304b5cf0497df, type: 3}
       propertyPath: health
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1476458730}
     - target: {fileID: 3066564013539859893, guid: ded92bffdbffb794aa3304b5cf0497df, type: 3}
       propertyPath: _measureDistance
       value: 
@@ -13632,9 +13632,13 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 6793598116063902132, guid: ded92bffdbffb794aa3304b5cf0497df, type: 3}
-      propertyPath: hunger
+      propertyPath: text
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6793598116063902132, guid: ded92bffdbffb794aa3304b5cf0497df, type: 3}
+      propertyPath: hunger
+      value: 
+      objectReference: {fileID: 353197676}
     - target: {fileID: 8405268230012332890, guid: ded92bffdbffb794aa3304b5cf0497df, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.06
