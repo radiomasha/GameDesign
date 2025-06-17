@@ -8,9 +8,21 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 55daccc09a3b69647bbab145b54a3ab3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Test.unity
     guid: c75f65caa0d47499f9f8b910e8b25378
+  - enabled: 1
+    path: Assets/Assests/NewSetUp/StartMenu.unity
+    guid: 743cf4591027a42ceaf9e4f55a18954b
+  - enabled: 1
+    path: Assets/Assests/NewSetUp/Level_1.unity
+    guid: fab4ec9a4cdff44648ec58cfc046c42b
+  - enabled: 1
+    path: Assets/Assests/NewSetUp/Level_2.unity
+    guid: 6c344a48ae670406ab73be92319b9278
+  - enabled: 1
+    path: Assets/Assests/NewSetUp/LevelTransitionMenu.unity
+    guid: b2f9c19daa352498d9864bafb052903c
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: bfa1182bd221b4ca89619141f66f1260, type: 2}
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: dc5a169419fa04987b057f65238cf3ba, type: 2}

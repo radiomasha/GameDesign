@@ -4,6 +4,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class TriggerButton : MonoBehaviour
 {
+
     private Button button;
 
     private void Awake()
@@ -14,7 +15,7 @@ public class TriggerButton : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-            button.onClick.Invoke();
-        
+        button.onClick.Invoke();
+
     }
 }
