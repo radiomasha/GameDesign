@@ -2,15 +2,17 @@ using UnityEngine;
 
 public class ScrollingEnvironment : MonoBehaviour
 {
-    public float scrollSpeed = 5f;
+    public float baseSpeed = 5f;
+    public float scrollSpeed;
+
     void Start()
     {
-        
+        scrollSpeed = baseSpeed;
     }
 
-    // Update is called once per frame
     void Update()
     {
         transform.Translate(Vector3.back * scrollSpeed * Time.deltaTime);
     }
 }
+
