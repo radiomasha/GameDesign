@@ -6,16 +6,17 @@ using TMPro;
 
 public class Hunger : MonoBehaviour
 {
+    public ScrollingEnvironment environment;
     public MeasureDistance _measureDistance;
     public Slider hunger;
     public TextMeshProUGUI text;
-    public bool isGameStarted = false;
+    public bool isGameStarted = true;
     [Header("Resource Settings")]
     public float maxValue = 100f;         // Максимальное значение ресурса
     public float currentValue;            // Текущее значение
-    public float decreaseRate = 5f;       // Уменьшение в секунду
+    public float decreaseRate =5f;       // Уменьшение в секунду
 
-    private bool isDead = false;          // Флаг, чтобы смерть происходила только один раз
+    //private bool isDead = false;          // Флаг, чтобы смерть происходила только один раз
 
     void Start()
     {
@@ -28,39 +29,56 @@ public class Hunger : MonoBehaviour
 
     void Update()
     {
-        if (isDead) return;
-        if (isGameStarted)
-        {
-             currentValue += decreaseRate * Time.deltaTime;
+        //if (!isGameStarted) return;
+
+        currentValue += decreaseRate * Time.deltaTime;
+        currentValue = Mathf.Min(currentValue, maxValue); // ограничение сверху
         hunger.value = currentValue;
-        // Ограничение снизу
-        if (currentValue >= maxValue)
-        {
-            currentValue = maxValue;
-            Die();
-        }
-        }
-        // Плавное уменьшение ресурса
-       
+
+        // Не опускаться ниже 90% (т.е. остаток минимум 10%)
+        float normalized = Mathf.InverseLerp(0f, maxValue * 0.9f, currentValue);
+        float minSpeedMultiplier = 0.1f; // минимум 10%
+        float speedMultiplier = Mathf.Lerp(1f, minSpeedMultiplier, normalized);
+
+        environment.scrollSpeed = speedMultiplier * environment.baseSpeed; // см. ниже
+
+        Debug.Log($"Energy: {currentValue}, Speed: {environment.scrollSpeed}");
     }
+
 
     /// <summary>
     /// Пополнение ресурса, но не выше максимума
     /// </summary>
     public void Refill(float amount)
     {
-        if (isDead) return;
+        //if (isDead) return;
         Debug.Log($"Refilling");
         currentValue -= amount;
         hunger.value = currentValue;
         if (currentValue < hunger.minValue)
             currentValue = hunger.minValue;
     }
+    
+    IEnumerator SmoothScrollSpeedReduction(ScrollingEnvironment environment, float targetMultiplier, float duration)
+    {
+        float startSpeed = environment.scrollSpeed;
+        float targetSpeed = startSpeed * targetMultiplier;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            environment.scrollSpeed = Mathf.Lerp(startSpeed, targetSpeed, elapsed / duration);
+            yield return null;
+        }
+
+        environment.scrollSpeed = targetSpeed; // гарантируем точное значение в конце
+    }
 
     /// <summary>
     /// Поведение при полном истощении ресурса
     /// </summary>
-    private void Die()
+   /* private void Die()
     {
         isDead = true;
         _measureDistance.FinishRun();
@@ -71,5 +89,5 @@ public class Hunger : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
+    }*/
 }
