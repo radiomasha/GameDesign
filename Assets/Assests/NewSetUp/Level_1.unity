@@ -3202,9 +3202,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 434562457}
+  - component: {fileID: 434562459}
+  - component: {fileID: 434562458}
   m_Layer: 0
   m_Name: b_r_middle1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3227,6 +3229,54 @@ Transform:
   - {fileID: 2037192558}
   m_Father: {fileID: 950013013}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &434562458
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434562456}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 3
+--- !u!135 &434562459
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 434562456}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.05
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &436282839
 GameObject:
   m_ObjectHideFlags: 0
@@ -4782,9 +4832,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 643322401}
+  - component: {fileID: 643322402}
   m_Layer: 0
   m_Name: r_index_finger_tip_marker
-  m_TagString: Untagged
+  m_TagString: FingerCollider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4804,6 +4855,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1651135563}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &643322402
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643322400}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &650890292
 GameObject:
   m_ObjectHideFlags: 0
@@ -7072,7 +7144,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.01
   m_Center: {x: 0, y: 0, z: 0}
@@ -12531,10 +12603,9 @@ MonoBehaviour:
   _activator: {fileID: 905065664}
   _fingerTip: {fileID: 643322401}
   _ship: {fileID: 1853863737}
-  _hand: {fileID: 1277055400}
+  _hand: {fileID: 434562457}
   _rotationSensitivity: 4
   _scaleFactor: 15
-  activate: {fileID: 11400000, guid: 0abfde13717c6634ab6733513d45eb6e, type: 2}
   _smallSphere: {fileID: 429168466}
 --- !u!135 &1644554083
 SphereCollider:
@@ -14669,7 +14740,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1996771886}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

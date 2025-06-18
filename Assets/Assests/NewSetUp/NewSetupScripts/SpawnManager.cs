@@ -127,20 +127,20 @@ public class SpawnManager : MonoBehaviour
             debrisObjects.Add(obj.transform);
         }
     }
-
-    void CheckDeadzone(List<Transform> list, GeneralObjPool pool)
+void CheckDeadzone(List<Transform> list, GeneralObjPool pool)
+{
+    for (int i = list.Count - 1; i >= 0; i--)
     {
-        for (int i = list.Count - 1; i >= 0; i--)
+        Transform obj = list[i];
+        if (obj == null) continue;
+
+        if (obj.position.z < deadZone.position.z)
         {
-            Transform obj = list[i];
-            if (obj == null) continue;
-            if (obj.position.z < deadZone.position.z)
-            {
-                list.RemoveAt(i);
-                pool.Return(obj.gameObject);
-            }
+            list.RemoveAt(i);
+            pool.Return(obj.gameObject);
         }
     }
+}
 
     Vector3 GetRandomPointInBounds(Bounds b)
     {

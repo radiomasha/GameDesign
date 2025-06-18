@@ -49,20 +49,21 @@ public class TurnOnOffActivator : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.IsChildOf(_fingerTip))
+        if (other.gameObject.CompareTag("FingerCollider"))
         {
             _isHandInVolume = true;
 
-            if (_activator != null)
-                _activator.SetActive(true);
+            Activated();
+            // if (_activator != null)
+            //     _activator.SetActive(true);
 
-           // activate.Occurred(gameObject);
+            //activate.Occurred(gameObject);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.transform.IsChildOf(_fingerTip))
+        if (other.gameObject.CompareTag("FingerCollider"))
         {
             _isHandInVolume = false;
             _isActivated = false;
