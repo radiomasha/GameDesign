@@ -10,7 +10,7 @@ public class TurnOnOffActivator : MonoBehaviour
     [SerializeField] private Transform _hand;
     [SerializeField] private float _rotationSensitivity = 10f;
     [SerializeField] private float _scaleFactor = 20f;
-    [SerializeField] private GameEvent activate;
+    //[SerializeField] private GameEvent activate;
     [SerializeField] private GameObject _smallSphere;
 
     public static event Action OnHandInSphere;
@@ -56,7 +56,7 @@ public class TurnOnOffActivator : MonoBehaviour
             if (_activator != null)
                 _activator.SetActive(true);
 
-            activate.Occurred(gameObject);
+           // activate.Occurred(gameObject);
         }
     }
 

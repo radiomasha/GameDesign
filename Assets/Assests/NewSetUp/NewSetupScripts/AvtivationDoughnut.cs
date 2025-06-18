@@ -7,10 +7,13 @@ public class AvtivationDoughnut : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        gameObject.SetActive(false);
+        if (collision.gameObject.CompareTag("Player")){
+            gameObject.SetActive(false);
         if (!ps.isPlaying)
         {
             ps.Play();
         }
+        }
+        
     }
 }
