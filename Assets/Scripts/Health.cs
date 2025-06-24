@@ -59,7 +59,7 @@ public class Health : MonoBehaviour
         Debug.Log($"{gameObject.name} has been destroyed.");
 
         // Tell the GameManager to restart the scene after a short delay
-        GameManager.Instance.RestartSceneAfterDelay(3f);
+        //GameManager.Instance.RestartSceneAfterDelay(3f);
 
         // Deactivate the object to remove it from the scene (but keep it alive for coroutine to finish)
         gameObject.SetActive(false);

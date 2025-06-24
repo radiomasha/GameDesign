@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DealDamage : MonoBehaviour
 {
-    private ObjectPool pool;
+    private GeneralObjPool pool;
     public int damageAmount = 10;   
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
