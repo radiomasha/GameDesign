@@ -66,7 +66,7 @@ public class SpawnManager : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GameObject obj = pool.Get();
-            obj.transform.position = GetRandomPointInBounds(bounds);
+            obj.transform.position = GetRandomPointInBounds();
             obj.transform.localScale = GetRandomScale(minScale, maxScale);
             obj.transform.rotation = Random.rotation;
             obj.transform.SetParent(parent, true);
@@ -88,19 +88,56 @@ public class SpawnManager : MonoBehaviour
     {
         while (true)
         {
-            int count = Random.Range(bonusBatchRange.x, bonusBatchRange.y + 1);
-            for (int i = 0; i < count; i++)
+            List<Vector3> usedPositions = new();
+            float minDistance = 1.5f; // Минимальное расстояние между объектами
+            int maxAttempts = 10;
+
+            while (true)
             {
                 GameObject obj = bonusPool.Get();
-                obj.transform.position = GetRandomPointInBounds(bounds);
+                if (obj == null) break;
+
+                Vector3 spawnPos = Vector3.zero;
+                bool valid = false;
+                int attempts = 0;
+
+                // Найти подходящую позицию
+                while (!valid && attempts < maxAttempts)
+                {
+                    spawnPos = GetRandomPointInBounds();
+                    valid = true;
+
+                    foreach (Vector3 pos in usedPositions)
+                    {
+                        if (Vector3.Distance(pos, spawnPos) < minDistance)
+                        {
+                            valid = false;
+                            break;
+                        }
+                    }
+
+                    attempts++;
+                }
+
+                if (!valid)
+                {
+                    // Не удалось найти подходящее место — пропускаем этот объект
+                    bonusPool.Return(obj);
+                    continue;
+                }
+
+                usedPositions.Add(spawnPos);
+                obj.transform.position = spawnPos;
                 obj.transform.localScale = GetRandomScale(bonusScaleMin, bonusScaleMax);
-                // 👇 we keep the prefab rotation (no override)
                 obj.transform.SetParent(backgroundGroup, true);
                 bonusObjects.Add(obj.transform);
             }
+
             yield return new WaitForSeconds(bonusInterval);
         }
     }
+
+
 
     void SpawnDebris()
     {
@@ -108,10 +145,13 @@ public class SpawnManager : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             GameObject obj = debrisPool.Get();
-            obj.transform.position = GetSpawnPointOnBack(bounds);
+            obj.transform.SetParent(null); 
+            Debug.Log($"[Spawn] {obj.name} scale: {obj.transform.localScale}");
             obj.transform.localScale = GetRandomScale(debrisScaleMin, debrisScaleMax);
+            obj.transform.position = GetSpawnPointOnBack(bounds);
             obj.transform.rotation = Random.rotation;
-            obj.transform.SetParent(null);
+
+
 
             Rigidbody rb = obj.GetComponent<Rigidbody>();
             if (rb == null)
@@ -137,13 +177,15 @@ void CheckDeadzone(List<Transform> list, GeneralObjPool pool)
         if (obj.position.z < deadZone.position.z)
         {
             list.RemoveAt(i);
-            pool.Return(obj.gameObject);
+            Destroy(gameObject);
+            //pool.Return(obj.gameObject);
         }
     }
 }
 
-    Vector3 GetRandomPointInBounds(Bounds b)
+    Vector3 GetRandomPointInBounds()
     {
+        Bounds b = spawnZone.bounds; // ⚠️ берём актуальные bounds каждый раз
         return new Vector3(
             Random.Range(b.min.x, b.max.x),
             Random.Range(b.min.y, b.max.y),

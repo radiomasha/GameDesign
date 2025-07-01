@@ -29,7 +29,7 @@ public class Hunger : MonoBehaviour
 
     void Update()
     {
-        //if (!isGameStarted) return;
+        if (!isGameStarted) return;
 
         currentValue += decreaseRate * Time.deltaTime;
         currentValue = Mathf.Min(currentValue, maxValue); // ограничение сверху
@@ -42,7 +42,7 @@ public class Hunger : MonoBehaviour
 
         environment.scrollSpeed = speedMultiplier * environment.baseSpeed; // см. ниже
 
-        Debug.Log($"Energy: {currentValue}, Speed: {environment.scrollSpeed}");
+        //Debug.Log($"Energy: {currentValue}, Speed: {environment.scrollSpeed}");
     }
 
 

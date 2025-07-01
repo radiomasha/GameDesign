@@ -22,7 +22,8 @@ public class DealDamage : MonoBehaviour
     private void ReturnToPool()
     {
         enabled = false;
-        pool.Return(gameObject);
+        Destroy(gameObject);
+        //pool.Return(gameObject);
     }
     // Update is called once per frame
 

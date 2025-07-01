@@ -39,7 +39,7 @@ public class Health : MonoBehaviour
     // Public method to apply damage to this object
     public void TakeDamage(float amount)
     {
-        Debug.Log("DamageTaken");
+        //Debug.Log("DamageTaken");
 
         // Reduce the current health by the damage amount
         currentHP -= amount;

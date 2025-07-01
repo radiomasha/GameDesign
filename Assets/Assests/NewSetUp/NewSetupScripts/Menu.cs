@@ -7,44 +7,30 @@ using UnityEngine;
 
 public class Menu: MonoBehaviour
 {
-    public GameObject UI;
-    public GameObject Gameplay;
-    public GameObject UIMenu;
+    [SerializeField] private SpawnManager _spawnManager;
+    [SerializeField] private Hunger _hunger;
     public GameObject SpawnZone;
-    public MeasureDistance distance;
-    public Hunger hunger;
     public TextMeshProUGUI RunText;
-    public GameObject Canvas;
-    
     private float seconds = 3.0f;
-    
     private bool isStarted = false;
-    public void StartPressed()
-    {
-        Gameplay.SetActive(true);
-        UI.SetActive(true);
-        UIMenu.SetActive(false);
-        Canvas.SetActive(true);
-    }
+    
 
     public void StartRun()
     {
         if (!SpawnZone.activeSelf)
         {
             StartCoroutine(RunCountdown());
+            _spawnManager.GetComponent<SpawnManager>().enabled = true;
         }
-
-        
     }
 
-    public void Quite()
+    private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Quite");
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false; // Остановить Play Mode
-#else
-    Application.Quit(); // Закрыть игру в билде
-#endif
+        if (!SpawnZone.activeSelf)
+        {
+            StartCoroutine(RunCountdown());
+            
+        }
     }
 
     private IEnumerator RunCountdown()
@@ -60,9 +46,9 @@ public class Menu: MonoBehaviour
 
         RunText.text = "GO!";
         yield return new WaitForSeconds(1f);
-        hunger.isGameStarted = true;
         RunText.text = "";
-        distance.isRunStarted = true;
         SpawnZone.SetActive(true);
+        _spawnManager.enabled = true;
+        _hunger.isGameStarted = true;
     }
 }
