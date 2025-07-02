@@ -9,12 +9,15 @@ public class Hunger : MonoBehaviour
     public ScrollingEnvironment environment;
     public MeasureDistance _measureDistance;
     public Slider hunger;
-    public TextMeshProUGUI text;
+    public TextMeshProUGUI UItext;
     public bool isGameStarted = true;
     [Header("Resource Settings")]
     public float maxValue = 100f;         // Максимальное значение ресурса
     public float currentValue;            // Текущее значение
     public float decreaseRate =5f;       // Уменьшение в секунду
+    
+    private Coroutine blinkCoroutine;
+    private bool isStarvingWarningShown = false;
 
     //private bool isDead = false;          // Флаг, чтобы смерть происходила только один раз
 
@@ -42,6 +45,26 @@ public class Hunger : MonoBehaviour
 
         environment.scrollSpeed = speedMultiplier * environment.baseSpeed; // см. ниже
 
+        if (currentValue / maxValue > 0.7f)
+        {
+            
+            if (!isStarvingWarningShown)
+            {
+                isStarvingWarningShown = true;
+                blinkCoroutine = StartCoroutine(BlinkText());
+                
+            }
+        }
+        else
+        {
+            if (isStarvingWarningShown)
+            {
+                isStarvingWarningShown = false;
+                if (blinkCoroutine != null) StopCoroutine(blinkCoroutine);
+                UItext.text = "";
+                UItext.alpha = 1f;
+            }
+        }
         //Debug.Log($"Energy: {currentValue}, Speed: {environment.scrollSpeed}");
     }
 
@@ -74,6 +97,19 @@ public class Hunger : MonoBehaviour
 
         environment.scrollSpeed = targetSpeed; // гарантируем точное значение в конце
     }
+    
+    private IEnumerator BlinkText()
+    {
+        while (true)
+        {
+            UItext.alpha = 0f;
+            yield return new WaitForSeconds(1f);
+            UItext.text = "You are starving, find any food";
+            UItext.alpha = 1f;
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
 
     /// <summary>
     /// Поведение при полном истощении ресурса

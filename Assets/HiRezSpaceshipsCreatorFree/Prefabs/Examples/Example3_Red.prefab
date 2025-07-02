@@ -58,6 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32a4469bba3a41742b9d0b6f23f2a130, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _measureDistance: {fileID: 0}
   health: {fileID: 0}
   text: {fileID: 0}
 --- !u!114 &6793598116063902132
@@ -72,6 +73,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 581205c599dda834fa59cce8081e269f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  environment: {fileID: 0}
+  _measureDistance: {fileID: 0}
   hunger: {fileID: 0}
   text: {fileID: 0}
   isGameStarted: 0

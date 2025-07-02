@@ -43,7 +43,7 @@ public class Health : MonoBehaviour
 
         // Reduce the current health by the damage amount
         currentHP -= amount;
-        Debug.Log($"{gameObject.name} took {amount} damage. Remaining HP: {currentHP}");
+        
         health.value = currentHP;
         // Check if the object has run out of HP
         if (currentHP <= health.minValue)
@@ -56,7 +56,6 @@ public class Health : MonoBehaviour
     private void Die()
     {
         _measureDistance.FinishRun();
-        Debug.Log($"{gameObject.name} has been destroyed.");
 
         // Tell the GameManager to restart the scene after a short delay
         //GameManager.Instance.RestartSceneAfterDelay(3f);

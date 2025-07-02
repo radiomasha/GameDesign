@@ -90,7 +90,7 @@ public class SpawnManager : MonoBehaviour
         {
             List<Vector3> usedPositions = new();
             float minDistance = 1.5f; // Минимальное расстояние между объектами
-            int maxAttempts = 10;
+            int maxAttempts = 25;
 
             while (true)
             {
