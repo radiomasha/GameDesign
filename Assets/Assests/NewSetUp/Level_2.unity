@@ -1247,7 +1247,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 469755315053828002, guid: a07c0d17564a3014f98f3e61ac84c7b4, type: 3}
       propertyPath: m_Name
-      value: Explosion Particles
+      value: Explosion Ship
       objectReference: {fileID: 0}
     - target: {fileID: 469755315053828002, guid: a07c0d17564a3014f98f3e61ac84c7b4, type: 3}
       propertyPath: m_IsActive
