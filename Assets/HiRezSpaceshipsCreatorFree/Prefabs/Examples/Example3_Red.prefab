@@ -61,6 +61,7 @@ MonoBehaviour:
   _measureDistance: {fileID: 0}
   health: {fileID: 0}
   text: {fileID: 0}
+  explosion: {fileID: 0}
 --- !u!114 &6793598116063902132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,7 +77,7 @@ MonoBehaviour:
   environment: {fileID: 0}
   _measureDistance: {fileID: 0}
   hunger: {fileID: 0}
-  text: {fileID: 0}
+  UItext: {fileID: 0}
   isGameStarted: 0
   maxValue: 100
   currentValue: 0

@@ -177,8 +177,8 @@ void CheckDeadzone(List<Transform> list, GeneralObjPool pool)
         if (obj.position.z < deadZone.position.z)
         {
             list.RemoveAt(i);
-            Destroy(gameObject);
-            //pool.Return(obj.gameObject);
+            //Destroy(gameObject);
+            pool.Return(obj.gameObject);
         }
     }
 }

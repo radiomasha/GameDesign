@@ -1,7 +1,8 @@
 {
   "dependencies": {
-    "com.meta.xr.sdk.core": "76.0.1",
-    "com.meta.xr.sdk.interaction.ovr": "76.0.1",
+    "com.meta.xr.sdk.core": "77.0.0",
+    "com.meta.xr.sdk.interaction.ovr": "77.0.0",
+    "com.unity.cinemachine": "2.10.3",
     "com.unity.collab-proxy": "2.8.2",
     "com.unity.feature.development": "1.0.2",
     "com.unity.inputsystem": "1.13.1",
