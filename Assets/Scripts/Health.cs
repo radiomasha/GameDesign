@@ -29,6 +29,7 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
+        if (gameObject.GetComponent<Hunger>().isBuffed) return;
         currentHP -= amount;
         health.value = currentHP;
 

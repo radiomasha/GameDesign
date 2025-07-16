@@ -11,6 +11,7 @@ public class Hunger : MonoBehaviour
     public Slider hunger;
     public TextMeshProUGUI UItext;
     public bool isGameStarted = true;
+    public bool isBuffed = false;
     [Header("Resource Settings")]
     public float maxValue = 100f;         // Максимальное значение ресурса
     public float currentValue;            // Текущее значение
@@ -28,11 +29,13 @@ public class Hunger : MonoBehaviour
         currentValue = hunger.minValue;
         hunger.value = currentValue;
         isGameStarted = false;
+        
     }
 
     void Update()
     {
         if (!isGameStarted) return;
+        if (isBuffed) return;
 
         currentValue += decreaseRate * Time.deltaTime;
         currentValue = Mathf.Min(currentValue, maxValue); // ограничение сверху
