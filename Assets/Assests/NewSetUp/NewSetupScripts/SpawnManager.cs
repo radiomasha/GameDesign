@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 { 
- [Header("Spawn Area")]
+    [Header("Spawn Area")]
     public BoxCollider spawnZone;
     public Transform deadZone;
     public Transform backgroundGroup;
@@ -14,13 +14,19 @@ public class SpawnManager : MonoBehaviour
     public GeneralObjPool backgroundPool;
     public GeneralObjPool debrisPool;
     public GeneralObjPool bonusPool;
+    public GeneralObjPool specialObjectPool; // Новый пул для специального объекта
+
+    [Header("Special Object Settings")]
+    [Tooltip("Length of the spawn zone for special object along Z-axis")]
+    public float specialObjectSpawnLength = 5f; // Длина зоны спавна по Z
+    private Transform specialObject; // Ссылка на созданный объект
 
     [Header("Background Batching")]
     public Vector2Int backgroundBatchRange = new Vector2Int(10, 30);
 
     [Header("Bonus Batching")]
     public Vector2Int bonusBatchRange = new Vector2Int(1, 5);
-    public float bonusInterval = 4f; // ← how often to spawn bonuses
+    public float bonusInterval = 4f;
 
     [Header("Debris Settings")]
     public Vector2 debrisIntervalRange = new Vector2(1f, 3f);
@@ -38,6 +44,7 @@ public class SpawnManager : MonoBehaviour
     public Vector3 debrisScaleMax = Vector3.one;
     public Vector3 bonusScaleMin = Vector3.one;
     public Vector3 bonusScaleMax = Vector3.one;
+    public Vector3 specialObjectScale = Vector3.one; // Масштаб специального объекта
 
     private List<Transform> debrisObjects = new();
     private List<Transform> bonusObjects = new();
@@ -48,9 +55,10 @@ public class SpawnManager : MonoBehaviour
         bounds = spawnZone.bounds;
 
         SpawnStaticBatch(backgroundPool, backgroundBatchRange, backgroundScaleMin, backgroundScaleMax, backgroundObjects, backgroundGroup);
+        SpawnSpecialObject(); // Спавним специальный объект
 
         StartCoroutine(DebrisLoop());
-        StartCoroutine(BonusLoop()); // ← NEW
+        StartCoroutine(BonusLoop());
     }
 
     void Update()
@@ -58,6 +66,56 @@ public class SpawnManager : MonoBehaviour
         CheckDeadzone(debrisObjects, debrisPool);
         CheckDeadzone(bonusObjects, bonusPool);
         CheckDeadzone(backgroundObjects, backgroundPool);
+        CheckSpecialObjectDeadzone(); // Проверяем специальный объект
+    }
+
+    void SpawnSpecialObject()
+    {
+        if (specialObjectPool == null)
+        {
+            Debug.LogWarning("Special Object Pool is not assigned!");
+            return;
+        }
+
+        // Рассчитываем центр зоны спавна
+        Vector3 center = spawnZone.bounds.center;
+    
+        // Создаем ограничивающую зону для специального объекта
+        Bounds specialBounds = new Bounds(
+            center, 
+            new Vector3(
+                spawnZone.bounds.size.x, 
+                spawnZone.bounds.size.y, 
+                specialObjectSpawnLength
+            )
+        );
+    
+        // Получаем случайную точку в пределах этой зоны
+        Vector3 spawnPos = new Vector3(
+            Random.Range(specialBounds.min.x, specialBounds.max.x),
+            Random.Range(specialBounds.min.y, specialBounds.max.y),
+            center.z
+        );
+    
+        // Спавним объект
+        GameObject obj = specialObjectPool.Get();
+        obj.transform.position = spawnPos;
+        obj.transform.localScale = specialObjectScale;
+        // Ротация остается как в префабе (убираем явное изменение ротации)
+        obj.transform.SetParent(backgroundGroup, true);
+    
+        specialObject = obj.transform;
+    }
+
+    void CheckSpecialObjectDeadzone()
+    {
+        if (specialObject != null && specialObject.position.z < deadZone.position.z)
+        {
+            specialObjectPool.Return(specialObject.gameObject);
+            specialObject = null;
+            // Если нужно respawnить объект автоматически:
+            // SpawnSpecialObject();
+        }
     }
 
     void SpawnStaticBatch(GeneralObjPool pool, Vector2Int batchRange, Vector3 minScale, Vector3 maxScale, List<Transform> list, Transform parent)
@@ -89,7 +147,7 @@ public class SpawnManager : MonoBehaviour
         while (true)
         {
             List<Vector3> usedPositions = new();
-            float minDistance = 1.5f; // Минимальное расстояние между объектами
+            float minDistance = 1.5f;
             int maxAttempts = 25;
 
             while (true)
@@ -101,7 +159,6 @@ public class SpawnManager : MonoBehaviour
                 bool valid = false;
                 int attempts = 0;
 
-                // Найти подходящую позицию
                 while (!valid && attempts < maxAttempts)
                 {
                     spawnPos = GetRandomPointInBounds();
@@ -121,7 +178,6 @@ public class SpawnManager : MonoBehaviour
 
                 if (!valid)
                 {
-                    // Не удалось найти подходящее место — пропускаем этот объект
                     bonusPool.Return(obj);
                     continue;
                 }
@@ -137,21 +193,16 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-
-
     void SpawnDebris()
     {
         int count = Random.Range(debrisMinPerWave, debrisMaxPerWave + 1);
         for (int i = 0; i < count; i++)
         {
             GameObject obj = debrisPool.Get();
-            obj.transform.SetParent(null); 
-            Debug.Log($"[Spawn] {obj.name} scale: {obj.transform.localScale}");
+            obj.transform.SetParent(null);
             obj.transform.localScale = GetRandomScale(debrisScaleMin, debrisScaleMax);
             obj.transform.position = GetSpawnPointOnBack(bounds);
             obj.transform.rotation = Random.rotation;
-
-
 
             Rigidbody rb = obj.GetComponent<Rigidbody>();
             if (rb == null)
@@ -167,25 +218,25 @@ public class SpawnManager : MonoBehaviour
             debrisObjects.Add(obj.transform);
         }
     }
-void CheckDeadzone(List<Transform> list, GeneralObjPool pool)
-{
-    for (int i = list.Count - 1; i >= 0; i--)
-    {
-        Transform obj = list[i];
-        if (obj == null) continue;
 
-        if (obj.position.z < deadZone.position.z)
+    void CheckDeadzone(List<Transform> list, GeneralObjPool pool)
+    {
+        for (int i = list.Count - 1; i >= 0; i--)
         {
-            list.RemoveAt(i);
-            //Destroy(gameObject);
-            pool.Return(obj.gameObject);
+            Transform obj = list[i];
+            if (obj == null) continue;
+
+            if (obj.position.z < deadZone.position.z)
+            {
+                list.RemoveAt(i);
+                pool.Return(obj.gameObject);
+            }
         }
     }
-}
 
     Vector3 GetRandomPointInBounds()
     {
-        Bounds b = spawnZone.bounds; // ⚠️ берём актуальные bounds каждый раз
+        Bounds b = spawnZone.bounds;
         return new Vector3(
             Random.Range(b.min.x, b.max.x),
             Random.Range(b.min.y, b.max.y),
@@ -217,5 +268,16 @@ void CheckDeadzone(List<Transform> list, GeneralObjPool pool)
                 Random.Range(min.z, max.z)
             );
         }
+    }
+
+    // Метод для ручного respawn'а специального объекта
+    public void RespawnSpecialObject()
+    {
+        if (specialObject != null)
+        {
+            specialObjectPool.Return(specialObject.gameObject);
+            specialObject = null;
+        }
+        SpawnSpecialObject();
     }
 }
